@@ -1,11 +1,12 @@
-const path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 
 module.exports = {
-  mode: "development",
-  entry: "./src/main.ts",
+  mode: 'development',
+  entry: './src/main.ts',
   output: {
-    path: path.join(__dirname, "dist"),
-    filename: "main.[contenthash:6].js",
+    path: path.join(__dirname, 'dist'),
+    filename: 'main.[contenthash:6].js',
     clean: true,
   },
   devServer: {
@@ -18,9 +19,9 @@ module.exports = {
         test: /\.ts$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babe/preset-env", "@babel/preset-typescript"],
+            presets: ['@babe/preset-env', '@babel/preset-typescript'],
           },
         },
       },
@@ -28,8 +29,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "Interaction",
-      template: path.join(__dirname, "index.html"),
+      title: 'Interaction',
+      template: path.join(__dirname, 'index.html'),
     }),
   ],
 };
