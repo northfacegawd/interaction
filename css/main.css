@@ -1,0 +1,54 @@
+@charset 'utf-8';
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;900&display=swap');
+
+:root {
+  --default-text: rgb(29, 29, 31);
+}
+
+html {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+}
+
+body {
+  overflow-x: hidden;
+  color: var(--default-text);
+  letter-spacing: -0.05em;
+  background-color: white;
+}
+
+p {
+  line-height: 1.6;
+}
+.global-nav {
+  height: 44px;
+}
+
+.local-nav {
+  height: 52px;
+  border-bottom: 1px solid #ddd;
+}
+
+.global-nav-links,
+.local-nav-links {
+  display: flex;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  height: 100%;
+}
+
+.global-nav-links {
+  justify-content: space-between;
+}
+
+.product-name {
+  margin-right: auto;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.local-nav-links a:not(.product-name) {
+  margin-left: 2em;
+  font-size: 0.8rem;
+}
