@@ -21,9 +21,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babe/preset-env', '@babel/preset-typescript'],
+            presets: ['@babel/preset-env', '@babel/preset-typescript'],
           },
         },
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
