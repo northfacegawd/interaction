@@ -4,6 +4,13 @@ import '../css/main.css';
 import { SceneInfo } from './model';
 
 function main() {
+  // window.pageXOffset 대신 쓸 변수
+  let yOffset = 0;
+  // 현재 스크롤 위치 (yOffset)보다 이전에 위치한 스크롤 높이값의 합
+  let prevScrollHeight = 0;
+  // 현재 활성화된(눈 앞에 보고있는) 씬(scroll-section)
+  let currentScene = 0;
+
   const sceneInfo: SceneInfo[] = [
     {
       // 0
@@ -53,8 +60,35 @@ function main() {
     });
   }
 
+  function scrollLoop() {
+    // prevScrollHeight 초기화
+    prevScrollHeight = 0;
+    for (let i = 0; i < currentScene; i++) {
+      prevScrollHeight += sceneInfo[i].scrollHeight;
+    }
+    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+      return currentScene++;
+    }
+    if (yOffset < prevScrollHeight) {
+      if (currentScene === 0) {
+        return;
+      }
+      return currentScene--;
+    }
+    console.log(currentScene);
+  }
+
   window.addEventListener('resize', setLayout, { passive: true });
   window.addEventListener('DOMContentLoaded', setLayout);
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      yOffset = window.pageYOffset;
+      scrollLoop();
+    },
+    { passive: true },
+  );
 }
 
 main();
