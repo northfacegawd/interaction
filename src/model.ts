@@ -9,6 +9,8 @@ export interface SceneInfo {
     [key: string]: HTMLElement;
   };
   values?: {
-    [key: string]: [number, number];
+    [key: string]: ValuesArray;
   };
 }
+
+export type ValuesArray = [number, number, { start: number; end: number }];
