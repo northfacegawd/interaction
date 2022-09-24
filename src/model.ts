@@ -5,6 +5,10 @@ export interface SceneInfo {
   heightNum: number;
   scrollHeight: number;
   objs: {
-    container: HTMLElement | null;
+    container: HTMLElement;
+    [key: string]: HTMLElement;
+  };
+  values?: {
+    [key: string]: [number, number];
   };
 }
