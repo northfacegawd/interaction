@@ -67,7 +67,6 @@ p {
 
 .scroll-section {
   padding-top: 50vh;
-  border: 1px solid red;
 }
 
 #scroll-section-0 h1 {
@@ -182,7 +181,13 @@ p {
 
 .sticky-elem-canvas {
   top: 0;
-  background-color: gray;
+  height: 100%;
+}
+
+.sticky-elem-canvas canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
 }
 
 @media (min-width: 1024px) {
