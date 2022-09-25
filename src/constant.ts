@@ -115,6 +115,13 @@ export const sceneInfo: SceneInfo[] = [
       canvasCaption: document.querySelector(
         '.canvas-caption',
       ) as HTMLCanvasElement,
+      canvas: document.querySelector('.image-blend-canvas'),
+      context: (
+        document.querySelector('.image-blend-canvas') as HTMLCanvasElement
+      ).getContext('2d'),
+      imagesPath: ['blend-image-1.jpg', 'blend-image-2.jpg'],
+      images: [],
     },
+    values: {},
   },
 ];

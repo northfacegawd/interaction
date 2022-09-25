@@ -21,12 +21,23 @@ function main() {
       imgElem.src = (await import(`../video/001/IMG_${6726 + i}.JPG`)).default;
       sceneInfo[0].objs?.videoImages.push(imgElem);
     }
+
     let imgElem2;
     for (let i = 0; i < (sceneInfo[2].values?.videoImageCount ?? 0); i++) {
       imgElem2 = document.createElement('img');
       imgElem2.src = (await import(`../video/002/IMG_${7027 + i}.JPG`)).default;
       sceneInfo[2].objs?.videoImages.push(imgElem2);
     }
+
+    let imgElem3;
+    for (let i = 0; i < (sceneInfo[3].objs?.imagesPath.length ?? 0); i++) {
+      imgElem3 = document.createElement('img');
+      imgElem3.src = (
+        await import(`../images/${sceneInfo[3].objs.imagesPath[i]}`)
+      ).default;
+      sceneInfo[3].objs?.images.push(imgElem3);
+    }
+    console.log(sceneInfo[3].objs?.images);
   }
 
   setCanvasImages();
@@ -333,6 +344,19 @@ function main() {
         }
         break;
       case 3:
+        // 가로 / 세로 모두 꽉 차게 하기 위해 여기서 세팅(계산 필요)
+        const widthRatio = window.innerWidth / objs.canvas.width;
+        const heightRatio = window.innerHeight / objs.canvas.height;
+        let canvasScaleRatio = 0;
+        if (widthRatio <= heightRatio) {
+          // 캔버스보다 브라우저 창이 홀쭉한 경우
+          canvasScaleRatio = heightRatio;
+        } else {
+          // 캔버스보다 브라우저 창이 납작한 경우
+          canvasScaleRatio = widthRatio;
+        }
+        objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        objs.context.drawImage(objs.images[0], 0, 0);
         break;
     }
   }
