@@ -41,4 +41,7 @@ module.exports = {
       template: path.join(__dirname, 'index.html'),
     }),
   ],
+  resolve: {
+    extensions: ['.ts', '.js'],
+  },
 };
