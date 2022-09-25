@@ -57,7 +57,7 @@ function main() {
         messageC_translateY_out: [0, -20, { start: 0.65, end: 0.7 }],
         messageD_translateY_out: [0, -20, { start: 0.85, end: 0.9 }],
         videoImageCount: 300,
-        imageSequence: [0, 200],
+        imageSequence: [0, 299],
       },
     },
     {
@@ -126,13 +126,13 @@ function main() {
 
   async function setCanvasImages() {
     let imgElem;
-    for (let i = 0; i < (sceneInfo[0].videoValues?.videoImageCount ?? 0); i++) {
+    for (let i = 0; i < (sceneInfo[0].values?.videoImageCount ?? 0); i++) {
       imgElem = document.createElement('img');
-
       imgElem.src = (await import(`../video/001/IMG_${6726 + i}.JPG`)).default;
-      sceneInfo[0].videoObjs?.videoImages.push(imgElem);
+      sceneInfo[0].objs?.videoImages.push(imgElem);
     }
   }
+
   setCanvasImages();
 
   // 각 스크롤 섹션의 높이 세팅
@@ -173,33 +173,34 @@ function main() {
     const scrollHeight = sceneInfo[currentScene].scrollHeight;
     // 현재 씬에서 스크롤된 범위를 비율로 구하기
     const scrollRatio = currentYOffset / scrollHeight;
-    if (values instanceof Array) {
-      if (values.length === 3) {
-        // start ~ end 사이에 애니메이션 실행
-        const partScrollStart = values[2].start * scrollHeight;
-        const partScrollEnd = values[2].end * scrollHeight;
-        const partScrollHeight = partScrollEnd - partScrollStart;
-        if (
-          currentYOffset >= partScrollStart &&
-          currentYOffset <= partScrollEnd
-        ) {
-          return (
-            ((currentYOffset - partScrollStart) / partScrollHeight) *
-              (values[1] - values[0]) +
-            values[0]
-          );
-        }
-        if (currentYOffset < partScrollStart) {
-          return values[0];
-        }
-        if (currentYOffset > partScrollEnd) {
-          return values[1];
-        }
-      }
-
-      return scrollRatio * (values[1] - values[0]) + values[0];
+    if (!(values instanceof Array)) {
+      return 0;
     }
-    return 0;
+    if (values.length === 3) {
+      // start ~ end 사이에 애니메이션 실행
+
+      const partScrollStart = values[2].start * scrollHeight;
+      const partScrollEnd = values[2].end * scrollHeight;
+      const partScrollHeight = partScrollEnd - partScrollStart;
+      if (
+        currentYOffset >= partScrollStart &&
+        currentYOffset <= partScrollEnd
+      ) {
+        return (
+          ((currentYOffset - partScrollStart) / partScrollHeight) *
+            (values[1] - values[0]) +
+          values[0]
+        );
+      }
+      if (currentYOffset < partScrollStart) {
+        return values[0];
+      }
+      if (currentYOffset > partScrollEnd) {
+        return values[1];
+      }
+    }
+
+    return scrollRatio * (values[1] - values[0]) + values[0];
   }
 
   function playAnimation() {
@@ -209,22 +210,17 @@ function main() {
     const scrollHeight = sceneInfo[currentScene].scrollHeight;
     // yOffset / 현재 씬의 scrollHeight
     const scrollRatio = currentYOffset / scrollHeight;
-    // video객체
-    const videoObjs = sceneInfo[currentScene].videoObjs;
-    // video value
-    const videoValues = sceneInfo[currentScene].videoValues;
     if (!values) {
       return;
     }
     switch (currentScene) {
       case 0:
         /** a */
-        if (!videoValues) {
-          return;
-        }
-        let sequence = calcValues(videoValues.imageSequence, currentYOffset);
+        const sequence = Math.round(
+          calcValues(values.imageSequence, currentYOffset),
+        );
+        objs.context.drawImage(objs.videoImages[sequence], 0, 0);
 
-        console.log(videoValues.imageSequence);
         if (scrollRatio <= 0.22) {
           objs.messageA.style.opacity = `${calcValues(
             values.messageA_opacity_in,

@@ -8,17 +8,8 @@ export interface SceneInfo {
     container: HTMLElement;
     [key: string]: any;
   };
-  videoObjs?: {
-    canvas: HTMLCanvasElement;
-    context: CanvasRenderingContext2D;
-    videoImages: Array<HTMLImageElement>;
-  };
   values?: {
     [key: string]: ValuesArray | number | [number, number];
-  };
-  videoValues?: {
-    videoImageCount: number;
-    imageSequence: [number, number];
   };
 }
 
