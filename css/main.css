@@ -70,8 +70,11 @@ p {
 }
 
 #scroll-section-0 h1 {
+  position: relative;
+  z-index: 5;
   font-size: 4rem;
   text-align: center;
+  top: -10vh;
 }
 
 .main-message {
@@ -188,6 +191,7 @@ p {
   position: absolute;
   top: 50%;
   left: 50%;
+  height: 100%;
 }
 
 @media (min-width: 1024px) {

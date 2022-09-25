@@ -56,6 +56,8 @@ function main() {
         messageB_translateY_out: [0, -20, { start: 0.45, end: 0.5 }],
         messageC_translateY_out: [0, -20, { start: 0.65, end: 0.7 }],
         messageD_translateY_out: [0, -20, { start: 0.85, end: 0.9 }],
+        canvas_opacity: [1, 0, { start: 0.9, end: 1 }],
+        canvas_filter: [0, 10, { start: 0.9, end: 1 }],
         videoImageCount: 300,
         imageSequence: [0, 299],
       },
@@ -163,11 +165,11 @@ function main() {
 
     document.body.setAttribute('id', `show-scene-${currentScene}`);
 
-    let heightRatio = window.innerHeight / 1080;
-    if (heightRatio > 1) {
-      heightRatio = 1;
-    }
-    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+    // let heightRatio = window.innerHeight / 1080;
+    // if (heightRatio > 1) {
+    //   heightRatio = 1;
+    // }
+    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(1)`;
   }
 
   /**
@@ -226,7 +228,14 @@ function main() {
           calcValues(values.imageSequence, currentYOffset),
         );
         objs.context.drawImage(objs.videoImages[sequence], 0, 0);
-
+        objs.canvas.style.opacity = `${calcValues(
+          values.canvas_opacity,
+          currentYOffset,
+        )}`;
+        objs.canvas.style.filter = `blur(${calcValues(
+          values.canvas_filter,
+          currentYOffset,
+        )}px)`;
         if (scrollRatio <= 0.22) {
           objs.messageA.style.opacity = `${calcValues(
             values.messageA_opacity_in,
@@ -446,7 +455,11 @@ function main() {
     },
     { passive: true },
   );
-  window.addEventListener('load', setLayout);
+  window.addEventListener('load', () => {
+    const firstScene = sceneInfo[0];
+    setLayout();
+    firstScene.objs.context.drawImage(firstScene.objs.videoImages[0], 0, 0);
+  });
   window.addEventListener('resize', setLayout, { passive: true });
 }
 
