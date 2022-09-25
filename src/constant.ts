@@ -122,6 +122,10 @@ export const sceneInfo: SceneInfo[] = [
       imagesPath: ['blend-image-1.jpg', 'blend-image-2.jpg'],
       images: [],
     },
-    values: {},
+    values: {
+      rect1X: [0, 0, { start: 0, end: 0 }],
+      rect2X: [0, 0, { start: 0, end: 0 }],
+      rectStartY: 0,
+    },
   },
 ];

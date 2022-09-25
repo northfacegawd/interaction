@@ -356,7 +356,47 @@ function main() {
           canvasScaleRatio = widthRatio;
         }
         objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        objs.context.fillStyle = 'white';
         objs.context.drawImage(objs.images[0], 0, 0);
+
+        // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+        const recalculatedInnerWidth =
+          document.body.offsetWidth / canvasScaleRatio;
+
+        const whiteRectWidth = recalculatedInnerWidth * 0.15;
+        if (values.rect1X instanceof Array && values.rect2X instanceof Array) {
+          if (!values.rectStartY) {
+            // values.rectStartY = objs.canvas.getBoundingClientRect().top;
+            values.rectStartY =
+              objs.canvas.offsetTop +
+              (objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2;
+            console.log(values.rectStartY);
+            values.rect1X[2]!.start = window.innerHeight / 2 / scrollHeight;
+            values.rect2X[2]!.start = window.innerHeight / 2 / scrollHeight;
+            values.rect1X[2]!.end = (values.rectStartY as any) / scrollHeight;
+            values.rect2X[2]!.end = (values.rectStartY as any) / scrollHeight;
+          }
+          values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+          values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+          values.rect2X[0] =
+            values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+          values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+          // 좌우 흰색 박스 그리기
+          objs.context.fillRect(
+            calcValues(values.rect1X, currentYOffset),
+            0,
+            parseInt(`${whiteRectWidth}`),
+            objs.canvas.height,
+          );
+          objs.context.fillRect(
+            calcValues(values.rect2X, currentYOffset),
+            0,
+            parseInt(`${whiteRectWidth}`),
+            objs.canvas.height,
+          );
+        }
+
         break;
     }
   }
