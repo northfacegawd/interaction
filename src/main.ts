@@ -70,12 +70,10 @@ function main() {
 
     document.body.setAttribute('id', `show-scene-${currentScene}`);
 
-    // let heightRatio = window.innerHeight / 1080;
-    // if (heightRatio > 1) {
-    //   heightRatio = 1;
-    // }
-    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(1)`;
-    sceneInfo[2].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(1)`;
+    const heightRatio = window.innerHeight / 1080;
+
+    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
+    sceneInfo[2].objs.canvas.style.transform = `translate3d(-50%, -50%, 0) scale(${heightRatio})`;
   }
 
   /**
@@ -342,6 +340,60 @@ function main() {
             currentYOffset,
           )})`;
         }
+
+        // currentScene 3에서 쓰는 캔버스를 미리 그려주기 시작
+        if (scrollRatio > 0.9) {
+          const objs = sceneInfo[3].objs;
+          const values = sceneInfo[3].values;
+          if (!values) {
+            return;
+          }
+          // 가로 / 세로 모두 꽉 차게 하기 위해 여기서 세팅(계산 필요)
+          const widthRatio = window.innerWidth / objs.canvas.width;
+          const heightRatio = window.innerHeight / objs.canvas.height;
+          let canvasScaleRatio = 0;
+          if (widthRatio <= heightRatio) {
+            // 캔버스보다 브라우저 창이 홀쭉한 경우
+            canvasScaleRatio = heightRatio;
+          } else {
+            // 캔버스보다 브라우저 창이 납작한 경우
+            canvasScaleRatio = widthRatio;
+          }
+          objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+          objs.context.fillStyle = 'white';
+          objs.context.drawImage(objs.images[0], 0, 0);
+
+          // 캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+          const recalculatedInnerWidth =
+            document.body.offsetWidth / canvasScaleRatio;
+
+          const whiteRectWidth = recalculatedInnerWidth * 0.15;
+          if (
+            values.rect1X instanceof Array &&
+            values.rect2X instanceof Array
+          ) {
+            values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+            values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+            values.rect2X[0] =
+              values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+            values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+            // 좌우 흰색 박스 그리기
+            objs.context.fillRect(
+              values.rect1X[0],
+              0,
+              parseInt(`${whiteRectWidth}`),
+              objs.canvas.height,
+            );
+            objs.context.fillRect(
+              values.rect2X[0],
+              0,
+              parseInt(`${whiteRectWidth}`),
+              objs.canvas.height,
+            );
+          }
+        }
+
         break;
       case 3:
         // 가로 / 세로 모두 꽉 차게 하기 위해 여기서 세팅(계산 필요)
