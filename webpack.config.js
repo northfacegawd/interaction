@@ -7,6 +7,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'main.[contenthash:6].js',
+    assetModuleFilename: 'images/[name][ext]',
     clean: true,
   },
   devServer: {
@@ -31,6 +32,7 @@ module.exports = {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
       },
+      { test: /\.(png|jpg|JPG|PNG)$/, type: 'asset/resource' },
     ],
   },
   plugins: [
