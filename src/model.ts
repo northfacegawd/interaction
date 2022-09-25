@@ -6,11 +6,23 @@ export interface SceneInfo {
   scrollHeight: number;
   objs: {
     container: HTMLElement;
-    [key: string]: HTMLElement;
+    [key: string]: any;
+  };
+  videoObjs?: {
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+    videoImages: Array<HTMLImageElement>;
   };
   values?: {
-    [key: string]: ValuesArray;
+    [key: string]: ValuesArray | number | [number, number];
+  };
+  videoValues?: {
+    videoImageCount: number;
+    imageSequence: [number, number];
   };
 }
 
-export type ValuesArray = [number, number, { start: number; end: number }];
+export type ValuesArray =
+  | [number, number, { start: number; end: number }]
+  | number
+  | [number, number];
